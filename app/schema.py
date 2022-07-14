@@ -7,7 +7,7 @@ class RequestAuthor(BaseModel):
         orm_mode = True
 
 class ResponseAuthor(BaseModel):
-    id: int
+    id: str
     name: str
 
     class Config:

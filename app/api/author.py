@@ -6,9 +6,9 @@ from app.schema import RequestAuthor, ResponseAuthor
 from app.models.author import Author as ModelAuthor
 
 from app.security import get_api_key
-
 from fastapi.security.api_key import APIKey
 
+from sqlalchemy.exc import IntegrityError
 
 router = APIRouter(prefix='/author')
 
@@ -36,9 +36,8 @@ async def create_new_author(author: RequestAuthor, api_key: APIKey = Depends(get
     try:
         db.session.add(db_author)
         db.session.commit()
-    except:
-        raise HTTPException(status_code=500, detail="Internal server error.") 
-
+    except (TypeError, IntegrityError):
+        raise HTTPException(status_code=500, detail="Integrity Violation Error. Probably the Author name already exists") 
 
     return db_author
 
@@ -55,7 +54,7 @@ async def author(id: int, author: RequestAuthor, api_key: APIKey = Depends(get_a
 
 
 @router.delete('/{id}', status_code=204, tags=['Author'])
-async def author(id: int, api_key: APIKey = Depends(get_api_key)):
+async def author(id: int, ):
     db_author = db.session.query(ModelAuthor).filter(ModelAuthor.id == id).first()
 
     db.session.delete(db_author)

@@ -1,4 +1,4 @@
 create table if not exists  author (
-    id serial primary key,
-    name text not null	
+    id text primary key,
+    name text unique not null	
 );
