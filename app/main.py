@@ -10,6 +10,13 @@ from app.api.author import router as AuthorRouter
 
 load_dotenv('.env')
 
+
+db_env = os.environ['DATABASE_URL']
+if db_env.startswith("postgres://"):
+    db_env = db_env.replace("postgres://", "postgresql://")
+    os.environ['DATABASE_URL'] = db_env
+
+
 app = FastAPI(
     title=os.environ['API_TITLE'],
     description=os.environ['API_DESCRIPTION'],
