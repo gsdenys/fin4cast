@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Integer, func
+from sqlalchemy import Column, DateTime, Integer, String, func
 from sqlalchemy.ext.declarative import declarative_base
 
 Base  = declarative_base()
@@ -12,6 +12,6 @@ class CommomBase(Base):
     """
     __abstract__ = True
 
-    id  = Column(Integer, primary_key=True, index=True)
+    id  = Column(String, primary_key=True, index=True)
     created = Column(DateTime(timezone=True), server_default=func.now())
     updated = Column(DateTime(timezone=True), onupdate=func.now())

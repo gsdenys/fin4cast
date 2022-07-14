@@ -1,3 +1,4 @@
+import string
 from fastapi import APIRouter, Depends, HTTPException
 
 from fastapi_sqlalchemy import db
@@ -14,7 +15,7 @@ router = APIRouter(prefix='/author')
 
 
 @router.get('/{id}', status_code=200, tags=['Author'])
-async def get_author_by_id(id: int, api_key: APIKey = Depends(get_api_key)):
+async def get_author_by_id(id: str, api_key: APIKey = Depends(get_api_key)):
     author = db.session.query(ModelAuthor).filter(ModelAuthor.id == id).first()
 
     if author is None:
@@ -43,7 +44,7 @@ async def create_new_author(author: RequestAuthor, api_key: APIKey = Depends(get
 
 
 @router.put('/{id}', response_model=ResponseAuthor, status_code=200, tags=['Author'])
-async def author(id: int, author: RequestAuthor, api_key: APIKey = Depends(get_api_key)):
+async def author(id: str, author: RequestAuthor, api_key: APIKey = Depends(get_api_key)):
     db_author = db.session.query(ModelAuthor).filter(ModelAuthor.id == id).first()
     db_author.name = author.name
 
@@ -54,7 +55,7 @@ async def author(id: int, author: RequestAuthor, api_key: APIKey = Depends(get_a
 
 
 @router.delete('/{id}', status_code=204, tags=['Author'])
-async def author(id: int, ):
+async def author(id: str, api_key: APIKey = Depends(get_api_key)):
     db_author = db.session.query(ModelAuthor).filter(ModelAuthor.id == id).first()
 
     db.session.delete(db_author)
