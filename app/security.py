@@ -6,7 +6,11 @@ from starlette.status import HTTP_403_FORBIDDEN
 
 
 API_KEY_NAME = "access_token"
-API_KEY = "AKH6FVez6TW57BMbWWnb7X8rB856Mnme"
+API_KEY =  os.environ['API_KEY']
+
+# Development and Test environment
+if not API_KEY:
+    API_KEY = "1234567890qwertyuiop"
 
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
