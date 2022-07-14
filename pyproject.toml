@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "forecast"
+version = "0.1.0"
+description = ""
+authors = ["Denys G. Santos"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.78.0"
+uvicorn = "^0.18.2"
+SQLAlchemy = "^1.4.39"
+python-dotenv = "^0.20.0"
+FastAPI-SQLAlchemy = "^0.2.1"
+pydantic = "^1.9.1"
+psycopg2 = "^2.9.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
