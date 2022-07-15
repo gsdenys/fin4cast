@@ -16,20 +16,3 @@ class ResponseAuthor(BaseModel):
 
     class Config:
         orm_mode = True
-
-# class RequestEntry(BaseModel):
-#     desc:str
-#     incomme: str
-#     value: float
-
-#     class Config:
-#         orm_mode = True
-
-# class ResponseEntry(BaseModel):
-#     id: str
-#     desc:str
-#     incomme: str
-#     value: float
-
-#     class Config:
-#         orm_mode = True
