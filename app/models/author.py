@@ -5,16 +5,18 @@ from sqlalchemy import event
 
 from app.models.commons import CommomBase,  before_insert
 
+
 class Author(CommomBase):
+    """The autor database mappin
+
+    Args:
+        CommomBase (CommomBase): The abstract mapping that contains some commons fields
+    """
     __tablename__ = "author"
 
-    id  = Column(String, primary_key=True, index=True)
     name = Column(String, nullable=False)
     email = Column(String, nullable=False)
 
 
+# add the event listen to be executed before data creation
 event.listen(Author, 'before_insert', before_insert)
-
-# @event.listens_for(Author, 'before_insert')
-# def before_insert(mapper, connect, target):
-#     target.id = str(uuid.uuid4())
