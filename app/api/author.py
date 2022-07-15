@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from fastapi_sqlalchemy import db
 
-from app.schema import RequestAuthor, ResponseAuthor
+from app.schema.author import RequestAuthor, ResponseAuthor
 from app.models.author import Author as ModelAuthor
 
 from app.security import get_api_key
