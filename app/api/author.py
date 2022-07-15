@@ -1,3 +1,4 @@
+import email
 import string
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -14,7 +15,7 @@ from sqlalchemy.exc import IntegrityError
 router = APIRouter(prefix='/author')
 
 
-@router.get('/{id}', status_code=200, tags=['Author'])
+@router.get('/{id}', response_model=ResponseAuthor, status_code=200, tags=['Author'])
 async def get_author_by_id(id: str, api_key: APIKey = Depends(get_api_key)):
     author = db.session.query(ModelAuthor).filter(ModelAuthor.id == id).first()
 
@@ -24,29 +25,31 @@ async def get_author_by_id(id: str, api_key: APIKey = Depends(get_api_key)):
     return author
 
 
-@router.get('/', status_code=200, tags=['Author'])
+@router.get('/', response_model=list[ResponseAuthor], status_code=200, tags=['Author'])
 async def author(api_key: APIKey = Depends(get_api_key)):
     author = db.session.query(ModelAuthor).all()
     return author
 
 
 @router.post('/', response_model=ResponseAuthor, status_code=201, tags=['Author'])
-async def create_new_author(author: RequestAuthor, api_key: APIKey = Depends(get_api_key)):
-    db_author = ModelAuthor(name=author.name)
+async def create_author(author: RequestAuthor, api_key: APIKey = Depends(get_api_key)):
+    db_author = ModelAuthor(name=author.name, email=author.email)
 
     try:
         db.session.add(db_author)
         db.session.commit()
     except (TypeError, IntegrityError):
-        raise HTTPException(status_code=500, detail="Integrity Violation Error. Probably the Author name already exists") 
+        raise HTTPException(status_code=500, detail="The email is already being used") 
 
     return db_author
 
 
 @router.put('/{id}', response_model=ResponseAuthor, status_code=200, tags=['Author'])
-async def author(id: str, author: RequestAuthor, api_key: APIKey = Depends(get_api_key)):
+async def update_author(id: str, author: RequestAuthor, api_key: APIKey = Depends(get_api_key)):
     db_author = db.session.query(ModelAuthor).filter(ModelAuthor.id == id).first()
+
     db_author.name = author.name
+    db_author.email = author.email
 
     db.session.add(db_author)
     db.session.commit()
@@ -55,7 +58,7 @@ async def author(id: str, author: RequestAuthor, api_key: APIKey = Depends(get_a
 
 
 @router.delete('/{id}', status_code=204, tags=['Author'])
-async def author(id: str, api_key: APIKey = Depends(get_api_key)):
+async def delete_author(id: str, api_key: APIKey = Depends(get_api_key)):
     db_author = db.session.query(ModelAuthor).filter(ModelAuthor.id == id).first()
 
     db.session.delete(db_author)
