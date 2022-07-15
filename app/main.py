@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware
 
 from app.api.author import router as AuthorRouter
+from app.api.entry import router as EntryRouter
 
 # load dotenv file
 from dotenv import load_dotenv
@@ -32,6 +33,7 @@ app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
 # include the routers. In the nexts version, all rutes should be encapsulated in an module, so
 # it'll more elegant than at the main
 app.include_router(AuthorRouter, prefix="/v1")
+app.include_router(EntryRouter, prefix="/v1")
 
 # This is just used by programmers to run it localy
 if __name__ == '__main__':
